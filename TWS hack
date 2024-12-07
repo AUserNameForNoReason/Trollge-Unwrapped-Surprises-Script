@@ -1,0 +1,25 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+
+-- Table of item names to collect
+local targetItems = {"Blood Cup", "Oil Cup", "Insanity Cup"}
+
+-- Function to teleport and interact
+local function teleportAndCollect(itemName)
+    local item = workspace:FindFirstChild(itemName, true) -- Searches all descendants
+    if item and item:FindFirstChild("ProximityPrompt") then
+        -- Teleport to the item's position
+        hrp.CFrame = item.CFrame
+
+        -- Interact with the proximity prompt
+        local prompt = item:FindFirstChild("ProximityPrompt")
+        fireproximityprompt(prompt)
+    end
+end
+
+-- Loop through all target items
+for _, itemName in pairs(targetItems) do
+    teleportAndCollect(itemName)
+    wait(0.5) -- Delay to ensure smooth interaction
+end
